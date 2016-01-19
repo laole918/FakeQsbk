@@ -1,9 +1,9 @@
 package com.laole918.fakeqsbk;
 
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.laole918.fakeqsbk.activity.HomeActivity_;
+import com.laole918.fakeqsbk.activity.base.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -13,7 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 @Fullscreen
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @ViewById
     View content_container;
