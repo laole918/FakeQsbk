@@ -4,8 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.camnter.easyslidingtabs.widget.EasySlidingTabs;
 import com.laole918.fakeqsbk.R;
 import com.laole918.fakeqsbk.activity.base.BaseActivity;
 import com.laole918.fakeqsbk.activity.fragment.SuggestFragment_;
@@ -22,7 +23,7 @@ import org.androidannotations.annotations.ViewById;
 public class HomeActivity extends BaseActivity {
 
     @ViewById
-    PagerSlidingTabStrip tabs;
+    EasySlidingTabs tabs;
     @ViewById
     ViewPager pager;
 
@@ -36,12 +37,17 @@ public class HomeActivity extends BaseActivity {
 
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabs.setViewPager(pager);
-//        tabs.setTextColor();
+        tabs.setUnderlinePadding0();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setLogo(R.mipmap.ic_ab_qiushi);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = { "专享", "视频", "纯的的的文", "纯图", "精华" };
+        private final String[] TITLES = { "专享", "视频", "纯文", "纯图", "精华" };
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

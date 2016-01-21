@@ -15,6 +15,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarSize">@dimen/action_bar_default_height</item>
+        <item name="actionBarDivider">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 </resources>
