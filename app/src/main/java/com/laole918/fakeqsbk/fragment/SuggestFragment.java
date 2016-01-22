@@ -1,4 +1,4 @@
-package com.laole918.fakeqsbk.activity.fragment;
+package com.laole918.fakeqsbk.fragment;
 
 import android.support.v4.app.Fragment;
 

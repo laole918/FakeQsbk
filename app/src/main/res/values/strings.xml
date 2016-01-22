@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">糗事百科</string>
+
+    <string name="ic_qiushi">糗事</string>
+    <string name="ic_qiuyoucircle">糗友圈</string>
+    <string name="ic_nearby">发现</string>
+    <string name="ic_message">小纸条</string>
+    <string name="ic_mine">我</string>
 </resources>
