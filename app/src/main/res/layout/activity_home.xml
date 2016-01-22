@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <FrameLayout
+        android:id="@+id/home_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"></FrameLayout>
@@ -12,9 +13,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#dddddd"/>
+        android:background="#dddddd" />
+
     <include
-        layout="@layout/layout_home_buttom"
+        layout="@layout/layout_home_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

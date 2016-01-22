@@ -6,4 +6,12 @@
     <color name="colorPrimary">#ffba1f</color>
     <color name="colorPrimaryDark">#ffba1f</color>
     <color name="colorAccent">#000000</color>
+    
+    <color name="color_menu_bottom_text_normal">#b8b8b8</color>
+    <color name="color_menu_bottom_text_select">#ffba1f</color>
+
+    <color name="easyTabTextColor">#63625e</color>
+    <color name="easySelectedTagTextColor">#ffba1f</color>
+    <color name="easyUnderlineColor">#e5e5e5</color>
+    <color name="easyIndicatorColor">#ffc44a</color>
 </resources>
