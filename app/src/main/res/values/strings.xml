@@ -6,4 +6,12 @@
     <string name="ic_nearby">发现</string>
     <string name="ic_message">小纸条</string>
     <string name="ic_mine">我</string>
+
+    <string-array name="qiushi_menu">
+        <item>专享</item>
+        <item>视频</item>
+        <item>纯文</item>
+        <item>纯图</item>
+        <item>精华</item>
+    </string-array>
 </resources>

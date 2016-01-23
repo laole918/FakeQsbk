@@ -18,5 +18,5 @@
     <include
         layout="@layout/layout_home_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/bottom_bar_default_height" />
 </LinearLayout>
