@@ -14,4 +14,7 @@
     <color name="easySelectedTagTextColor">#ffba1f</color>
     <color name="easyUnderlineColor">#e5e5e5</color>
     <color name="easyIndicatorColor">#ffc44a</color>
+
+    <color name="customToastTextColor">#999999</color>
+    <color name="customToastBgColor">#ef000000</color>
 </resources>

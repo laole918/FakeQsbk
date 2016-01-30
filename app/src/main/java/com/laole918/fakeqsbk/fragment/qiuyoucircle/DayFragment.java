@@ -1,4 +1,4 @@
-package com.laole918.fakeqsbk.fragment;
+package com.laole918.fakeqsbk.fragment.qiuyoucircle;
 
 import android.support.v4.app.Fragment;
 
@@ -10,5 +10,6 @@ import org.androidannotations.annotations.EFragment;
  * Created by laole918 on 2016/1/20.
  */
 @EFragment(R.layout.fragment_yetopen)
-public class MessageFragment extends Fragment {
+public class DayFragment extends Fragment {
+
 }

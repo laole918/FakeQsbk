@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.laole918.fakeqsbk.R;
 import com.laole918.fakeqsbk.activity.base.BaseActivity;
@@ -13,6 +14,7 @@ import com.laole918.fakeqsbk.fragment.MineFragment_;
 import com.laole918.fakeqsbk.fragment.NearbyFragment_;
 import com.laole918.fakeqsbk.fragment.QiushiFragment_;
 import com.laole918.fakeqsbk.fragment.QiuyouCircleFragment_;
+import com.laole918.fakeqsbk.utils.ToastUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.androidannotations.annotations.AfterViews;
@@ -37,6 +39,8 @@ public class HomeActivity extends BaseActivity {
     @ViewById
     View btn_ic_qiushi, btn_ic_qiuyoucircle, btn_ic_nearby, btn_ic_message, btn_ic_mine;
 
+    private long lastBackPressedTimeMillis;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,7 @@ public class HomeActivity extends BaseActivity {
             messageFragment = getSupportFragmentManager().findFragmentByTag(message);
             mineFragment = getSupportFragmentManager().findFragmentByTag(mine);
         }
+        lastBackPressedTimeMillis = System.currentTimeMillis();
     }
 
     @AfterViews
@@ -63,6 +68,17 @@ public class HomeActivity extends BaseActivity {
         actionBar.setDisplayShowHomeEnabled(true);
 
         setTabSelection(qiushi);
+    }
+
+    public void onBackPressed() {
+        long nowTimeMillis = System.currentTimeMillis();
+        //在一秒内再次按下返回键退出应用
+        if(nowTimeMillis - lastBackPressedTimeMillis > 1000) {
+            lastBackPressedTimeMillis = nowTimeMillis;
+            ToastUtils.show(this, R.string.tip_back_pressed, Toast.LENGTH_SHORT);
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Click(R.id.btn_ic_qiushi)

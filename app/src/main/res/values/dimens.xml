@@ -12,4 +12,8 @@
     
     <dimen name="easyIndicatorHeight">4dp</dimen>
     <dimen name="easyUnderlineHeight">1dp</dimen>
+
+    <dimen name="customToastTestSize">15sp</dimen>
+    <dimen name="customToastRadius">5dp</dimen>
+    <dimen name="customToastMargin">2dp</dimen>
 </resources>

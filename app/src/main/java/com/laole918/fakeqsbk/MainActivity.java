@@ -24,6 +24,10 @@ public class MainActivity extends BaseActivity {
         showAd();
     }
 
+    public void onBackPressed() {
+        //屏蔽返回键
+    }
+
     @UiThread(delay = 2000)
     protected void showAd() {
         content_container.setVisibility(View.VISIBLE);

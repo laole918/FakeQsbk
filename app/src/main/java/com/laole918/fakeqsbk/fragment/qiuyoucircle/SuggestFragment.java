@@ -1,4 +1,4 @@
-package com.laole918.fakeqsbk.fragment;
+package com.laole918.fakeqsbk.fragment.qiuyoucircle;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -6,8 +6,10 @@ import android.widget.ListView;
 
 import com.laole918.fakeqsbk.R;
 import com.laole918.fakeqsbk.adapter.ArticleAdapter;
+import com.laole918.fakeqsbk.event.QiushiEvent;
 import com.laole918.fakeqsbk.http.Suggest;
 import com.laole918.fakeqsbk.model.Article;
+import com.laole918.fakeqsbk.utils.EventBusUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -28,7 +30,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  * Created by laole918 on 2016/1/20.
  */
 @EFragment(R.layout.fragment_suggest)
-public class SuggestFragment extends Fragment implements PtrHandler, LoadMoreHandler, Suggest.SuggestListener {
+public class SuggestFragment extends Fragment implements PtrHandler, LoadMoreHandler {
 
     @ViewById
     PtrClassicFrameLayout mPtrFrame;
@@ -40,24 +42,39 @@ public class SuggestFragment extends Fragment implements PtrHandler, LoadMoreHan
     @Bean
     ArticleAdapter adapter;
 
-    private Suggest suggest = new Suggest();
+    private boolean isDropDown;
+    private int count = 30;
+    private int page = 1;
 
     @AfterViews
     protected void afterViews() {
+        EventBusUtils.register(this);
         mPtrFrame.setPtrHandler(this);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         moreContainer.setLoadMoreHandler(this);
         moreContainer.useDefaultFooter();
 
         listView.setAdapter(adapter);
-        suggest.setSuggestListener(this);
 
         mPtrFrame.autoRefresh(true);
+        listView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                System.out.println();
+            }
+        });
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
     }
 
     @Override
     public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-        suggest.next();
+        isDropDown = false;
+        page ++;
+        Suggest.get(page, count);
     }
 
     @Override
@@ -67,28 +84,32 @@ public class SuggestFragment extends Fragment implements PtrHandler, LoadMoreHan
 
     @Override
     public void onRefreshBegin(PtrFrameLayout frame) {
-        suggest.refresh();
+        isDropDown = true;
+        page = 1;
+        Suggest.get(page, count);
     }
 
-    @Override
-    public void onSuccess(List<Article> as) {
-        if(!suggest.isDropdown()) {
+    public void onEvent(QiushiEvent.SuggestEvent event) {
+        if(event.isError()) {
+            if(isDropDown) {
+                mPtrFrame.refreshComplete();
+            } else {
+                page --;
+                moreContainer.loadMoreError(0, event.getErrorMsg());
+            }
+            return;
+        }
+        List<Article> as = event.getAs();
+        boolean emptyResult = false;
+        if(isDropDown) {
+            emptyResult = as.isEmpty();
             adapter.clear();
             mPtrFrame.refreshComplete();
         }
-        boolean emptyResult = as.isEmpty();
-        boolean hasMore = suggest.hasNext();
+        boolean hasMore = as.size() >= count;
         moreContainer.loadMoreFinish(emptyResult, hasMore);
         adapter.addAll(as);
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onError(String error) {
-        if(!suggest.isDropdown()) {
-            mPtrFrame.refreshComplete();
-        } else {
-            moreContainer.loadMoreError(0, error);
-        }
-    }
 }

@@ -2,8 +2,10 @@ package com.laole918.fakeqsbk.http;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonStringListener;
+import com.laole918.fakeqsbk.event.QiushiEvent;
 import com.laole918.fakeqsbk.model.Article;
 import com.laole918.fakeqsbk.model.ArticleResponse;
+import com.laole918.fakeqsbk.utils.EventBusUtils;
 import com.laole918.fakeqsbk.utils.JSONUtils;
 import com.laole918.fakeqsbk.utils.VolleyUtils;
 
@@ -12,82 +14,35 @@ import java.util.List;
 /**
  * Created by laole918 on 2016/1/3.
  */
-public class Suggest extends Page implements HttpApi, JsonStringListener {
+public class Suggest implements HttpApi {
 
-    private boolean isDropdown = false;
-    private boolean hasNext = true;
-    private SuggestListener listener;
-
-    public void setSuggestListener(SuggestListener listener) {
-        this.listener = listener;
+    public static void get(int page, int count) {
+        String url = suggest + "?" + "page=" + page + "&count=" + count;
+        VolleyUtils.send(url, listener);
     }
 
-    public void refresh() {
-        isDropdown = false;
-        setPage(1);
-        setCount(30);
-        send();
-    }
-
-    public void send() {
-        String url = suggest + "?" + "page=" + getPage() + "&count=" + getCount();
-        VolleyUtils.send(url, this);
-    }
-
-    public boolean hasNext() {
-        return hasNext;
-    }
-
-    public boolean isDropdown() {
-        return isDropdown;
-    }
-
-    public void next() {
-        isDropdown = true;
-        nextPage();
-        setCount(30);
-        send();
-    }
-
-    @Override
-    public void onResponse(String jsonString) {
-        ArticleResponse ar = JSONUtils.parseObject(jsonString, ArticleResponse.class);
-        if(ar != null) {
-            if(ar.getErr() == 0) {
-                List<Article> as = ar.getItems();
-                hasNext = as.size() >= 30;
-                mListener.onSuccess(as);
-            } else {
-                mListener.onError("未知错误");
-            }
-        } else {
-            mListener.onError("未知错误");
-        }
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        mListener.onError(error.getMessage());
-    }
-
-    private SuggestListener mListener = new SuggestListener() {
+    private static JsonStringListener listener = new JsonStringListener() {
         @Override
-        public void onSuccess(List<Article> as) {
-            if(listener != null) {
-                listener.onSuccess(as);
+        public void onResponse(String jsonString) {
+            QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
+            ArticleResponse ar = JSONUtils.parseObject(jsonString, ArticleResponse.class);
+            if (ar != null) {
+                if (ar.getErr() == 0) {
+                    List<Article> as = ar.getItems();
+                    event.setAs(as);
+                }
             }
+            if(event.isError()) {
+                event.setErrorMsg("error");
+            }
+            EventBusUtils.post(event);
         }
 
         @Override
-        public void onError(String error) {
-            if(listener != null) {
-                listener.onError(error);
-            }
+        public void onErrorResponse(VolleyError error) {
+            QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
+            event.setErrorMsg(error.getMessage());
+            EventBusUtils.post(event);
         }
     };
-
-    public interface SuggestListener {
-        void onSuccess(List<Article> as);
-        void onError(String error);
-    }
 }

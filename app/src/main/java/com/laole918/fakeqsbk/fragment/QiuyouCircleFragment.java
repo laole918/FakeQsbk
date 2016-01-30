@@ -9,6 +9,6 @@ import org.androidannotations.annotations.EFragment;
 /**
  * Created by laole918 on 2016/1/20.
  */
-@EFragment(R.layout.fragment_suggest)
+@EFragment(R.layout.fragment_yetopen)
 public class QiuyouCircleFragment extends Fragment {
 }

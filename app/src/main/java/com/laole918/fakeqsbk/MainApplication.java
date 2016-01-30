@@ -13,11 +13,14 @@ import org.androidannotations.annotations.EApplication;
 @EApplication
 public class MainApplication extends Application {
 
+    public static Application App;
+
     @Override
     public void onCreate() {
         super.onCreate();
         VolleyUtils.init(this);
         ImageLoaderUtils.init(this);
+        App = this;
     }
 
 }

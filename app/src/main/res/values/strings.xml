@@ -6,6 +6,7 @@
     <string name="ic_nearby">发现</string>
     <string name="ic_message">小纸条</string>
     <string name="ic_mine">我</string>
+    <string name="tip_back_pressed">再次按下返回键退出</string>
 
     <string-array name="qiushi_menu">
         <item>专享</item>
