@@ -57,12 +57,6 @@ public class SuggestFragment extends Fragment implements PtrHandler, LoadMoreHan
         listView.setAdapter(adapter);
 
         mPtrFrame.autoRefresh(true);
-        listView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                System.out.println();
-            }
-        });
     }
 
     public void onDestroy() {
