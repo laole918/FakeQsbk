@@ -43,6 +43,7 @@ dependencies {
     //compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'org.xutils:xutils:3.3.16'
 }
 
 apt {
