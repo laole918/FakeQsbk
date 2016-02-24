@@ -6,6 +6,7 @@ import com.laole918.fakeqsbk.utils.ImageLoaderUtils;
 import com.laole918.fakeqsbk.utils.VolleyUtils;
 
 import org.androidannotations.annotations.EApplication;
+import org.xutils.x;
 
 /**
  * Created by laole918 on 2016/1/18.
@@ -20,6 +21,8 @@ public class MainApplication extends Application {
         super.onCreate();
         VolleyUtils.init(this);
         ImageLoaderUtils.init(this);
+        x.Ext.init(this);
+        x.Ext.setDebug(true); // 是否输出debug日志
         App = this;
     }
 
