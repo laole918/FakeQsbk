@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
 def AAVersion = '3.3.2'
 
@@ -19,16 +20,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
 
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+    //compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.alibaba:fastjson:1.2.7'
     compile 'in.srain.cube:clog:1.0.2'
     compile ('in.srain.cube:ultra-ptr:1.0.11') {
@@ -40,10 +52,16 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    //compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.camnter.easyslidingtabs:easyslidingtabs:0.2.1'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'org.xutils:xutils:3.3.16'
+    //compile 'org.xutils:xutils:3.3.16'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    //compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
+    //compile 'com.github.SeanCode:retrofit-converters-fastjson:1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 }
 
 apt {
@@ -51,4 +69,8 @@ apt {
         androidManifestFile variant.outputs[0]?.processResources?.manifestFile
         resourcePackageName android.defaultConfig.applicationId
     }
+}
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
 }
