@@ -1,15 +1,17 @@
 package com.laole918.fakeqsbk.http;
-
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonStringListener;
+import com.laole918.fakeqsbk.api.QsbkApi;
 import com.laole918.fakeqsbk.event.QiushiEvent;
 import com.laole918.fakeqsbk.model.Article;
 import com.laole918.fakeqsbk.model.ArticleResponse;
 import com.laole918.fakeqsbk.utils.EventBusUtils;
-import com.laole918.fakeqsbk.utils.JSONUtils;
-import com.laole918.fakeqsbk.utils.VolleyUtils;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.fastjson.FastjsonConverterFactory;
 
 /**
  * Created by laole918 on 2016/1/3.
@@ -17,32 +19,36 @@ import java.util.List;
 public class Suggest implements HttpApi {
 
     public static void get(int page, int count) {
-        String url = suggest + "?" + "page=" + page + "&count=" + count;
-        VolleyUtils.send(url, listener);
-    }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(host)
+                .addConverterFactory(FastjsonConverterFactory.create())
+                .build();
+        QsbkApi qsbkApi = retrofit.create(QsbkApi.class);
+        Call<ArticleResponse> call = qsbkApi.getSuggest(page, count);
 
-    private static JsonStringListener listener = new JsonStringListener() {
-        @Override
-        public void onResponse(String jsonString) {
-            QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
-            ArticleResponse ar = JSONUtils.parseObject(jsonString, ArticleResponse.class);
-            if (ar != null) {
-                if (ar.getErr() == 0) {
-                    List<Article> as = ar.getItems();
-                    event.setAs(as);
+        call.enqueue(new Callback<ArticleResponse>() {
+            @Override
+            public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
+                ArticleResponse ar = response.body();
+                if (ar != null) {
+                    if (ar.getErr() == 0) {
+                        List<Article> as = ar.getItems();
+                        event.setAs(as);
+                    }
                 }
+                if(event.isError()) {
+                    event.setErrorMsg("error");
+                }
+                EventBusUtils.post(event);
             }
-            if(event.isError()) {
-                event.setErrorMsg("error");
-            }
-            EventBusUtils.post(event);
-        }
 
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
-            event.setErrorMsg(error.getMessage());
-            EventBusUtils.post(event);
-        }
-    };
+            @Override
+            public void onFailure(Call<ArticleResponse> call, Throwable t) {
+                QiushiEvent.SuggestEvent event = new QiushiEvent.SuggestEvent();
+                event.setErrorMsg(t.getMessage());
+                EventBusUtils.post(event);
+            }
+        });
+    }
 }
