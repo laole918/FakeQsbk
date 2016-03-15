@@ -2,8 +2,8 @@ package com.laole918.fakeqsbk.api;
 
 import com.laole918.fakeqsbk.model.ArticleResponse;
 
-import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -13,5 +13,5 @@ import rx.Observable;
 public interface QsbkApi {
 
     @GET("/article/list/suggest")
-    Observable<ArticleResponse> getSuggest(@Query("page") int page, @Query("count") int count);
+    Observable<ArticleResponse> getSuggest(@Header("Uuid") String uuid, @Query("page") int page, @Query("count") int count);
 }
